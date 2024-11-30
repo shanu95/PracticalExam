@@ -10,7 +10,9 @@ export const loginUser = async (email: string, password: string) => {
   };
 
   export const fetchSongs = async (query: string, page: number = 1) => {
-    const url = `${API_URLS.ALL_SONGS}&term=${encodeURIComponent(query)}&limit=15&offset=${(page - 1) * 15}`;
+    const baseUrl = query ? `https://itunes.apple.com/search?term=${encodeURIComponent(query)}` : API_URLS.ALL_SONGS;
+    const url = `${baseUrl}&limit=15&offset=${(page - 1) * 15}`;
     const response = await axios.get(url);
     return response.data.results;
   };
+  

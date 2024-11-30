@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -30,7 +30,8 @@ const ExploreScreen = () => {
   }, [debouncedSearchTerm, dispatch]);
 
   useEffect(() => {
-    dispatch(getSongs({ query, page }));
+    const searchQuery = query.trim() || "all";
+    dispatch(getSongs({ query: searchQuery, page }));
   }, [query, page, dispatch]);
 
   const handleSearch = (text: string) => {
@@ -40,7 +41,9 @@ const ExploreScreen = () => {
   const handleClearSearch = () => {
     setSearchTerm("");
     dispatch(setQuery(""));
+    dispatch(getSongs({ query: "all", page: 1 }));
   };
+  
 
   const handleLoadMore = () => {
     dispatch(loadMore());
@@ -49,6 +52,12 @@ const ExploreScreen = () => {
   const handleSongPress = (song: Song) => {
     navigation.navigate("Details", { song });
   };
+
+  const renderItem = useCallback(
+    ({ item }) => <SongItem item={item} onPress={handleSongPress} />,
+    [handleSongPress]
+  );
+  
 
   return (
     <View style={styles.container}>
@@ -73,10 +82,18 @@ const ExploreScreen = () => {
       ) : (
         <FlatList
           data={songs}
-          keyExtractor={(item) => item.trackId?.toString() || Math.random().toString()}
-          renderItem={({ item }) => <SongItem item={item} onPress={handleSongPress} />}
+          keyExtractor={(item, index) => {
+            const key = item.trackId?.toString() || `${item.wrapperType}-${item.collectionId || item.artistId}-${index}`;
+            return `${key}-${index}`;
+          }}                         
+          //renderItem={({ item }) => <SongItem item={item} onPress={handleSongPress} />}
+          renderItem={renderItem}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          windowSize={10}
+          removeClippedSubviews={true}
           ListFooterComponent={
             loading ? <ActivityIndicator size="small" color="#FFD700" /> : null
           }

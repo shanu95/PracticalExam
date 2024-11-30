@@ -22,9 +22,11 @@ export const getSongs = createAsyncThunk(
   "songs/getSongs",
   async ({ query, page }: { query: string; page: number }) => {
     const searchQuery = query.trim() || "all";
-    return await fetchSongs(searchQuery, page);
+    const results = await fetchSongs(searchQuery, page);
+    return results;
   }
 );
+
 
 const songsSlice = createSlice({
   name: "songs",
@@ -33,7 +35,9 @@ const songsSlice = createSlice({
     setQuery: (state, action) => {
       state.query = action.payload;
       state.page = 1;
-      state.songs = [];
+      if (action.payload.trim()) {
+        state.songs = [];
+      }
     },
     loadMore: (state) => {
       state.page += 1;
@@ -47,7 +51,8 @@ const songsSlice = createSlice({
       })
       .addCase(getSongs.fulfilled, (state, action) => {
         state.loading = false;
-        state.songs = [...state.songs, ...action.payload];
+        // state.songs = [...state.songs, ...action.payload];
+        state.songs = state.page === 1 ? action.payload : [...state.songs, ...action.payload];
       })
       .addCase(getSongs.rejected, (state, action) => {
         state.loading = false;

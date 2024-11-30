@@ -1,21 +1,25 @@
-import React from "react";
+import React,{memo} from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Song } from "../types/Song";
 import theme from "../utils/theme";
 
-const SongItem = ({ item, onPress }: { item: Song; onPress: (song: Song) => void }) => (
-  <TouchableOpacity style={styles.songItem} onPress={() => onPress(item)}>
-    <Image source={{ uri: item.artworkUrl100 || "https://via.placeholder.com/100" }} style={styles.thumbnail} />
-    <View style={styles.songDetails}>
-      <Text style={styles.trackName}>{item.trackName || "Unknown"}</Text>
-      <Text style={styles.artistName}>
-        {item.artistName || "Unknown"} • {item.collectionName || "Unknown"}
-      </Text>
-    </View>
-    <TouchableOpacity style={styles.moreButton}>
-      <Text style={styles.moreIcon}>•••</Text>
+const SongItem = memo(
+  ({ item, onPress }: { item: Song; onPress: (song: Song) => void }) => (
+    <TouchableOpacity style={styles.songItem} onPress={() => onPress(item)}>
+      <Image source={{ uri: item.artworkUrl100 || "https://via.placeholder.com/100" }} style={styles.thumbnail} />
+      <View style={styles.songDetails}>
+        <Text style={styles.trackName}>{item.trackName || "Unknown"}</Text>
+        <Text style={styles.artistName}>
+          {item.artistName || "Unknown"} • {item.collectionName || "Unknown"}
+        </Text>
+      </View>
+      <TouchableOpacity style={styles.moreButton}>
+        <Text style={styles.moreIcon}>•••</Text>
+      </TouchableOpacity>
     </TouchableOpacity>
-  </TouchableOpacity>
+  ),
+  (prevProps, nextProps) =>
+    prevProps.item === nextProps.item && prevProps.onPress === nextProps.onPress
 );
 
 const styles = StyleSheet.create({
