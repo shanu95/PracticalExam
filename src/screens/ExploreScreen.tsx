@@ -13,14 +13,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSongs, setQuery, loadMore } from "../redux/songsSlice";
 import { Song } from "../types/Song";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import SongItem from "../components/SongItem";
 import theme from "../utils/theme";
 import { useDebounce } from "../hooks/useDebounce";
 
-const ExploreScreen = () => {
+const ExploreScreen = ({navigation}:any) => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
   const { songs, loading, query, page } = useSelector((state: any) => state.songs);
   const [searchTerm, setSearchTerm] = useState(query);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
