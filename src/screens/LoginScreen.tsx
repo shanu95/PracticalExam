@@ -19,8 +19,8 @@ import theme from "../utils/theme";
 import InputField from "../components/InputField";
 
 const LoginScreen = ({ navigation }: any) => {
-  const [email, setEmail] = useState("eve.holt@reqres.in");
-  const [password, setPassword] = useState("cityslicka");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
