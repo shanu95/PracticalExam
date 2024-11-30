@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StatusBar,
   ScrollView,
+  Platform,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { addSong } from "../redux/recentlyPlayedSlice";
@@ -32,7 +33,7 @@ const DetailsScreen = ({ route, navigation }: any) => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={15} color="white" />
+          <Ionicons name={Platform.OS === "ios" ? "chevron-back" : "arrow-back"} size={15} color="white" />
         </TouchableOpacity>
 
       

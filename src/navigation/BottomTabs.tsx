@@ -15,7 +15,7 @@ const BottomTabs = () => {
         tabBarIcon: ({ color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap;
 
-          if (route.name === "HomeTab") {
+          if (route.name === "Home") {
             iconName = "home-outline";
           } else if (route.name === "Explore") {
             iconName = "search-outline";
@@ -33,7 +33,7 @@ const BottomTabs = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="HomeTab" component={HomeScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Explore" component={ExploreScreen} />
       <Tab.Screen name="Library" component={LibraryScreen} />
     </Tab.Navigator>

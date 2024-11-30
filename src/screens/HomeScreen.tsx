@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -16,9 +16,20 @@ import * as SecureStore from "expo-secure-store";
 
 const HomeScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
-
+  const [greeting, setGreeting] = useState("");
  
   const recentlyPlayed = useSelector((state: any) => state.recentlyPlayed.songs);
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) {
+      setGreeting("Good Morning");
+    } else if (hour < 18) {
+      setGreeting("Good Afternoon");
+    } else {
+      setGreeting("Good Evening");
+    }
+  }, []);
 
   //dummy recently played
   useEffect(() => {
@@ -85,7 +96,7 @@ const HomeScreen = ({ navigation }: any) => {
     return (
       <FlatList
         data={recentlyPlayed.slice(1)}
-        keyExtractor={(item) => item.trackId}
+        keyExtractor={(item, index) => item.trackId ? `${item.trackId}-${index}` : `key-${index}`}
         renderItem={({ item }) => (
           <View style={styles.songItem}>
             <Image source={{ uri: item.artworkUrl100 }} style={styles.artworkSmall} />
@@ -107,7 +118,7 @@ const HomeScreen = ({ navigation }: any) => {
      
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Good Afternoon</Text>
+          <Text style={styles.greeting}>{greeting}</Text>
           <Text style={styles.subText}>Recently played</Text>
         </View>
         <TouchableOpacity onPress={() => setModalVisible(true)}>

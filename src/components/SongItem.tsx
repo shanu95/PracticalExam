@@ -1,35 +1,60 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { Song } from "../types/Song";
+import theme from "../utils/theme";
 
-const SongItem = ({ artist, track, artwork }: any) => {
-  return (
-    <View style={styles.container}>
-      <Image source={{ uri: artwork }} style={styles.artwork} />
-      <Text style={styles.trackName}>{track}</Text>
-      <Text style={styles.artistName}>{artist}</Text>
+const SongItem = ({ item, onPress }: { item: Song; onPress: (song: Song) => void }) => (
+  <TouchableOpacity style={styles.songItem} onPress={() => onPress(item)}>
+    <Image source={{ uri: item.artworkUrl100 || "https://via.placeholder.com/100" }} style={styles.thumbnail} />
+    <View style={styles.songDetails}>
+      <Text style={styles.trackName}>{item.trackName || "Unknown"}</Text>
+      <Text style={styles.artistName}>
+        {item.artistName || "Unknown"} • {item.collectionName || "Unknown"}
+      </Text>
     </View>
-  );
-};
+    <TouchableOpacity style={styles.moreButton}>
+      <Text style={styles.moreIcon}>•••</Text>
+    </TouchableOpacity>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
-  container: {
-    width: 100,
+  songItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: theme.colors.textInputBackground,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  thumbnail: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
     marginRight: 10,
   },
-  artwork: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
+  songDetails: {
+    flex: 1,
   },
   trackName: {
-    color: "#fff",
-    fontSize: 14,
+    color: theme.colors.textPrimary,
+    fontSize: 16,
     fontWeight: "bold",
-    marginTop: 5,
+    marginBottom: 4,
   },
   artistName: {
-    color: "#999",
+    color: theme.colors.textSecondary,
     fontSize: 12,
+  },
+  moreButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 5,
+  },
+  moreIcon: {
+    color: theme.colors.textSecondary,
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

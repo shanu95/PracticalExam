@@ -12,19 +12,11 @@ const StackNavigator = () => {
   const isAuthenticated = useSelector((state: RootState) => !!state.auth.token);
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {isAuthenticated ? (
-        <>
-          {/* navigating to home tab if authenticated */}
-          <Stack.Screen name="HomeTab" component={BottomTabs} />
-          <Stack.Screen name="Details" component={DetailsScreen} />
-        </>
-      ) : (
-        <>
-          {/* if not show login screen */}
-          <Stack.Screen name="Login" component={LoginScreen} />
-        </>
-      )}
+    <Stack.Navigator screenOptions={{ headerShown: false }}
+    initialRouteName={isAuthenticated ? "HomeTabs" : "Login"}>
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="HomeTabs" component={BottomTabs} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
     </Stack.Navigator>
   );
 };

@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { setToken } from "../redux/authSlice";
 import { loginUser } from "../utils/apiService";
 import theme from "../utils/theme";
+import InputField from "../components/InputField";
 
 const LoginScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState("eve.holt@reqres.in");
@@ -46,7 +47,7 @@ const LoginScreen = ({ navigation }: any) => {
       // saving token to SecureStorage
       await SecureStore.setItemAsync("userToken", token);
 
-      navigation.navigate("HomeTab");
+      navigation.navigate("HomeTabs");
     } catch (error: any) {
       Alert.alert(
         "Login Failed",
@@ -73,37 +74,26 @@ const LoginScreen = ({ navigation }: any) => {
           </View>
 
           
-          <Text style={styles.label}>Username</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            placeholderTextColor="#999"
-          />
+            <InputField
+                label="Username"
+                value={email}
+                onChangeText={setEmail}
+                placeholder="Enter your email"
+                keyboardType="email-address"
+                />
+
+            <InputField
+                label="Password"
+                value={password}
+                onChangeText={setPassword}
+                placeholder="Enter your password"
+                secureTextEntry
+                showPassword={showPassword}
+                togglePassword={() => setShowPassword(!showPassword)}
+                />
 
          
-          <Text style={styles.label}>Password</Text>
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.passwordInput}
-              placeholder="Enter your password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={!showPassword}
-              placeholderTextColor="#999"
-            />
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-              <Text style={styles.showPasswordText}>
-                {showPassword ? "Hide" : "Show"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-         
-          <TouchableOpacity onPress={() => Alert.alert("Feature Coming Soon!")}>
+          <TouchableOpacity onPress={() => {}}>
             <Text style={styles.forgotPassword}>Forgot your password?</Text>
           </TouchableOpacity>
 
